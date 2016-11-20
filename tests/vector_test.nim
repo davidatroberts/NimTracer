@@ -8,6 +8,12 @@ suite "vector suite":
     let res = a==b
     check res == true
 
+  test "approx":
+    let a = newVector(10, 10, 10)
+    let b = newVector(10.00001, 10.00001, 10.00001)
+    let res = approx(a, b)
+    check res == true
+
   test "addition":
     let a = newVector(10, 20, 30)
     let b = newVector(30, 40, 50)
@@ -51,5 +57,25 @@ suite "vector suite":
   test "magnitude":
     let a = newVector(5, 10, 10)
     let res = a.magnitude()
-    let exp = 15
+    let exp = 15.0
+    check exp == res
+
+  test "normalize":
+    var v = newVector(3, 1, 2)
+    v.normalize()
+    let exp = newVector(0.801783, 0.267261, 0.534522)
+    check approx(exp, v) == true
+
+  test "dot":
+    let a = newVector(3, 4, 5)
+    let b = newVector(6, 7, 8)
+    let res = dot(a, b)
+    let exp = 86.0
+    check exp == res
+
+  test "cross":
+    let a = newVector(1, 2, 3)
+    let b = newVector(3, 4, 5)
+    let res = cross(a, b)
+    let exp = newVector(-2, 4, -2)
     check exp == res

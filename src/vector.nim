@@ -1,5 +1,7 @@
 import math
 
+const epsilon = 0.00001
+
 type
   Vector* = ref object of RootObj
     x*, y*, z*: float32
@@ -55,3 +57,22 @@ proc `/=`*(v: var Vector, s: float32) =
   v.x /= s
   v.y /= s
   v.z /= s
+
+proc `$`*(v: Vector): string =
+  result = "[" & $v.x & "," & $v.y & "," & $v.z & "]"
+
+proc normalize*(v: var Vector) =
+  let m = v.magnitude()
+  v*=(1.0/m)
+
+proc approx*(a, b: Vector): bool =
+  (abs(a.x - b.x) < epsilon) and (abs(a.y - b.y) < epsilon) and (abs(a.z - b.z) < epsilon)
+
+proc dot*(a, b: Vector): float32 =
+  result = a.x*b.x + a.y*b.y + a.z*b.z
+
+proc cross*(a, b: Vector): Vector =
+  let xx = a.y*b.z - a.z*b.y
+  let yy = a.z*b.x - a.x*b.z
+  let zz = a.x*b.y - a.y*b.x
+  result = newVector(xx, yy, zz)
