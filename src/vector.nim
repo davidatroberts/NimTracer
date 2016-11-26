@@ -76,3 +76,21 @@ proc cross*(a, b: Vector): Vector =
   let yy = a.z*b.x - a.x*b.z
   let zz = a.x*b.y - a.y*b.x
   result = newVector(xx, yy, zz)
+
+proc r*(v: Vector): float32 =
+  result = v.x
+
+proc g*(v: Vector): float32 =
+  result = v.y
+
+proc b*(v: Vector): float32 =
+  result = v.z
+
+proc rq*(v: Vector): uint8 =
+  result = uint8(min(255.0, (v.x*256.0)))
+
+proc gq*(v: Vector): uint8 =
+  result = uint8(min(255.0, (v.y*256.0)))
+
+proc bq*(v: Vector): uint8 =
+  result = uint8(min(255.0, (v.z*256.0)))
