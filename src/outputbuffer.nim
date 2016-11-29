@@ -6,16 +6,16 @@ type
     width, height: Natural
     buffer: seq[Vector]
 
-proc newOutputBuffer(width, height: Natural): OutputBuffer =
+proc newOutputBuffer*(width, height: Natural): OutputBuffer =
   new(result)
   result.width = width
   result.height = height
   result.buffer = newSeq[Vector](width*height)
 
-proc put(op: var OutputBuffer, x, y: Natural, colour: Vector) =
+proc put*(op: var OutputBuffer, x, y: Natural, colour: Vector) =
   op.buffer[x*op.height+y] = colour
 
-proc toFile(op: OutputBuffer, path: string) =
+proc toFile*(op: OutputBuffer, path: string) =
   var f: File
   if open(f, path, fmWrite):
     write(f, "P3\n")

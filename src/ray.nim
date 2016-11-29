@@ -2,12 +2,12 @@ import vector
 
 type
   Ray* = ref object of RootObj
-    a*, b*: Vector
+    origin*, direction*: Vector
 
-proc newRay*(a, b: Vector): Ray =
+proc newRay*(origin, direction: Vector): Ray =
   new(result)
-  result.a = a
-  result.b = b
+  result.origin = origin
+  result.direction = direction
 
 proc pAtParamater*(r: Ray, t: float32): Vector =
-  result = r.a + (r.b*t)
+  result = r.origin + (r.direction*t)
