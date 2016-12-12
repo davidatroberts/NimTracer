@@ -1,3 +1,5 @@
+import strutils
+
 import vector
 import ray
 import outputbuffer
@@ -11,8 +13,8 @@ let nx = 200
 let ny = 100
 
 let lowerLeftCorner = newVector(-2.0, -1.0, -1.0)
-let vertical = newVector(0.0, 2.0, 0.0)
 let horizontal = newVector(4.0, 0.0, 0.0)
+let vertical = newVector(0.0, 2.0, 0.0)
 let origin = newVector(0.0, 0.0, 0.0)
 
 var fb = newOutputBuffer(Natural(nx), Natural(ny))
@@ -26,6 +28,5 @@ for j in countdown(ny-1, 0):
     let col = colour(r)
 
     fb.put(Natural(i), Natural(j), col)
-
 
 fb.toFile("img.ppm")

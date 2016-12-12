@@ -3,12 +3,17 @@ import os
 
 const
   ROOT_TEST_DIR = "tests"
+  SRC_DIR       = "src"
+  BIN_DIR       = "bin"
 
 task "default", "Build project":
   echo "did something"
 
 task "build", "Build project":
-  echo "did something"
+  withDir(SRC_DIR):
+    createDir(".." / BIN_DIR)
+    shell("nim", "c", "--verbosity:0", "-o:../bin/rt", "main.nim")
+
 
 task "debug", "Build project in debug mode":
   echo "did something"
