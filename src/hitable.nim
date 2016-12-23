@@ -9,9 +9,16 @@ type
   Sphere* = ref object of Hitable
     centre: Vector
     radius: float
+  HitableList* = ref object of Hitable
+    list: seq[Hitable]
 
 method hit*(h: Hitable, r: Ray, tmin, tmax: float, rec: var HitRecord): bool {.base.} =
   return false
+
+proc newSphere(centre: Vector, radius: float): Sphere =
+  new(result)
+  result.centre = centre
+  result.radius = radius
 
 method hit*(s: Sphere, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
   let oc = r.origin - s.centre
@@ -33,10 +40,22 @@ method hit*(s: Sphere, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
       rec.p = r.pAtParamater(rec.t)
       rec.normal = (rec.p - s.centre) / s.radius
       return true
+
   return false
 
-
-proc newSphere(centre: Vector, radius: float): Sphere =
+proc newHitable(list: seq[Hitable]): HitableList =
   new(result)
-  result.centre = centre
-  result.radius = radius
+  result.list = list
+
+method hit*(h: HitableList, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
+  var tmp: HitRecord
+  var hit = false
+  var closest = tmax
+
+  for it in h.list:
+    if it.hit(r, tmin, tmax, tmp):
+      hit = true
+      closest = tmp.t
+      rec = tmp
+
+  return hit
