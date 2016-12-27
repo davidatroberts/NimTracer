@@ -1,24 +1,27 @@
 import math
 
+import hitrecord
+import material
 import ray
 import vector
 
 type
-  HitRecord* = tuple[t: float, p: Vector, normal: Vector]
   Hitable* = ref object of RootObj
   Sphere* = ref object of Hitable
     centre: Vector
     radius: float
+    material: Material
   HitableList* = ref object of Hitable
     list: seq[Hitable]
 
 method hit*(h: Hitable, r: Ray, tmin, tmax: float, rec: var HitRecord): bool {.base.} =
   return false
 
-proc newSphere*(centre: Vector, radius: float): Sphere =
+proc newSphere*(centre: Vector, radius: float, material: Material): Sphere =
   new(result)
   result.centre = centre
   result.radius = radius
+  result.material = material
 
 method hit*(s: Sphere, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
   let oc = r.origin - s.centre
@@ -33,6 +36,7 @@ method hit*(s: Sphere, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
       rec.t = temp
       rec.p = r.pAtParamater(rec.t)
       rec.normal = (rec.p - s.centre) / s.radius
+      rec.material = s.material
       return true
 
     temp = (-b + sqrt(b*b - a*c)) / a
@@ -40,6 +44,7 @@ method hit*(s: Sphere, r: Ray, tmin, tmax: float, rec: var HitRecord): bool =
       rec.t = temp
       rec.p = r.pAtParamater(rec.t)
       rec.normal = (rec.p - s.centre) / s.radius
+      rec.material = s.material
       return true
 
   return false

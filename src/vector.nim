@@ -1,4 +1,5 @@
 import math
+import random
 
 const epsilon = 0.00001
 
@@ -22,6 +23,9 @@ proc p_norm*(v: Vector, p: float): float =
 
 proc magnitude*(v: Vector): float =
   result = v.p_norm(2)
+
+proc squaredLength*(v: Vector): float =
+  result = v.x*v.x + v.y*v.y + v.z*v.z
 
 proc `+`*(a, b: Vector): Vector =
   result = newVector(a.x+b.x, a.y+b.y, a.z+b.z)
@@ -47,6 +51,9 @@ proc `*`*(v: Vector, s: float): Vector =
 
 proc `*`*(s: float, v: Vector): Vector =
   result = v*s
+
+proc `*`*(a, b: Vector): Vector =
+  result = newVector(a.x*b.x, a.y*b.y, a.z*b.z)
 
 proc `*=`*(v: var Vector, s: float) =
   v.x *= s
@@ -101,3 +108,15 @@ proc gq*(v: Vector): uint8 =
 
 proc bq*(v: Vector): uint8 =
   result = uint8(min(255.0, (v.z*256.0)))
+
+proc randomInUnitSphere*(): Vector =
+  var p: Vector
+  p = 2.0*newVector(random(1.0), random(1.0), random(1.0)) - newVector(1, 1, 1)
+
+  while p.squaredLength() >= 1.0:
+    p = 2.0*newVector(random(1.0), random(1.0), random(1.0)) - newVector(1, 1, 1)
+
+  result = p
+
+proc reflect*(v: Vector, n: Vector): Vector =
+  result = v - 2.0*dot(v, n)*n
