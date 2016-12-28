@@ -121,6 +121,15 @@ proc randomInUnitSphere*(): Vector =
 
   result = p
 
+proc randomInUnitDisk*(): Vector =
+  var p: Vector
+  p = 2.0*newVector(random(1.0), random(1.0), 0.0) - newVector(1.0, 1.0, 0.0)
+
+  while dot(p, p) >= 1.0:
+    p = 2.0*newVector(random(1.0), random(1.0), 0.0) - newVector(1.0, 1.0, 0.0)
+
+  result = p
+
 proc reflect*(v, n: Vector): Vector =
   result = v - 2.0*dot(v, n)*n
 

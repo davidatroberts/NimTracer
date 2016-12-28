@@ -34,11 +34,13 @@ let ns = 50
 var fb = newOutputBuffer(Natural(nx), Natural(ny))
 
 # camera setup
-let lowerLeftCorner = newVector(-2.0, -1.0, -1.0)
-let horizontal = newVector(4.0, 0.0, 0.0)
-let vertical = newVector(0.0, 2.0, 0.0)
-let origin = newVector(0.0, 0.0, 0.0)
-let cam = newCamera(origin, lowerLeftCorner, horizontal, vertical)
+let lookfrom = newVector(3.0, 3.0, 2.0)
+let lookat = newVector(0.0, 0.0, -1.0)
+let distToFocus = (lookfrom-lookat).magnitude()
+let aperture = 2.0
+
+let cam = newCamera(lookfrom, lookat, newVector(0.0, 1.0, 0.0), 20.0,
+  float(nx)/float(ny), aperture, distToFocus)
 
 # world setup
 var things: seq[Hitable] = @[
