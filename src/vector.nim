@@ -35,6 +35,9 @@ proc `+=`*(v: var Vector, other: Vector) =
   v.y += other.y
   v.z += other.z
 
+proc `-`*(v: Vector): Vector =
+  result = newVector(-v.x, -v.y, -v.z)
+
 proc `-`*(a, b: Vector): Vector =
   result = newVector(a.x-b.x, a.y-b.y, a.z-b.z)
 
@@ -118,5 +121,15 @@ proc randomInUnitSphere*(): Vector =
 
   result = p
 
-proc reflect*(v: Vector, n: Vector): Vector =
+proc reflect*(v, n: Vector): Vector =
   result = v - 2.0*dot(v, n)*n
+
+proc refract*(v, n: Vector, niOverNt: float, refracted: var Vector): bool =
+  let uv = v.unitDirection()
+  let dt = dot(uv, n)
+  let discriminant = 1.0 - niOverNt*niOverNt*(1.0-dt*dt)
+  if discriminant > 0:
+    refracted = niOverNt*(uv-n*dt)-n*sqrt(discriminant)
+    result = true
+  else:
+    result = false

@@ -30,7 +30,7 @@ randomize()
 # image settings
 let nx = 400
 let ny = 200
-let ns = 100
+let ns = 50
 var fb = newOutputBuffer(Natural(nx), Natural(ny))
 
 # camera setup
@@ -42,10 +42,16 @@ let cam = newCamera(origin, lowerLeftCorner, horizontal, vertical)
 
 # world setup
 var things: seq[Hitable] = @[
-  Hitable(newSphere(newVector(0.0, 0.0, -1.0), 0.5, newLambertian(newVector(0.8, 0.3, 0.3)))),
-  Hitable(newSphere(newVector(0.0, -100.5, -1.0), 100.0, newLambertian(newVector(0.8, 0.8, 0.0)))),
-  Hitable(newSphere(newVector(1.0, 0.0, -1.0), 0.5, newMetal(newVector(0.8, 0.6, 0.2), 0.3))),
-  Hitable(newSphere(newVector(-1.0, 0.0, -1.0), 0.5, newMetal(newVector(0.8, 0.8, 0.8), 1.0)))
+  Hitable(newSphere(newVector(0.0, 0.0, -1.0), 0.5,
+    newLambertian(newVector(0.1, 0.2, 0.5)))),
+  Hitable(newSphere(newVector(0.0, -100.5, -1.0), 100.0,
+    newLambertian(newVector(0.8, 0.8, 0.0)))),
+  Hitable(newSphere(newVector(1.0, 0.0, -1.0), 0.5,
+    newMetal(newVector(0.8, 0.6, 0.2), 0.3))),
+  Hitable(newSphere(newVector(-1.0, 0.0, -1.0), 0.5,
+    newDielectric(1.5))),
+  Hitable(newSphere(newVector(-1, 0, -1), -0.45,
+    newDielectric(1.5)))
 ]
 
 let world = newHitableList(things)
